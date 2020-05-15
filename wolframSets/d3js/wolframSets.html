@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Wolfram sets</title>
+        <link rel="stylesheet" href="wolframSets.css">
+    </head>
+    <body>
+        <header>
+            <button onclick="start()">Start</button>
+            <button onclick="stop()">Stop</button>
+            <button onclick="clearGrid()">Clear</button>  
+            <div>&nbsp Lifecycle count: <span id="counter">0</span></div>        
+        </header>
+        <section id="game"></section>
+        <footer>
+            <div><span>Choose ruleset</span></div>
+            <div>
+                <span class="on"></span>
+                <span class="on"></span>
+                <span class="on"></span>
+                &nbsp;
+                <span class="on"></span>
+                <span class="on"></span>
+                <span class="off"></span>
+                &nbsp;
+                <span class="on"></span>
+                <span class="off"></span>
+                <span class="on"></span>
+                &nbsp;
+                <span class="on"></span>
+                <span class="off"></span>
+                <span class="off"></span>
+                &nbsp;
+                <span class="off"></span>
+                <span class="on"></span>
+                <span class="on"></span>
+                &nbsp;
+                <span class="off"></span>
+                <span class="on"></span>
+                <span class="off"></span>
+                &nbsp;
+                <span class="off"></span>
+                <span class="off"></span>
+                <span class="on"></span>
+                &nbsp;
+                <span class="off"></span>
+                <span class="off"></span>
+                <span class="off"></span>
+            </div>
+            <div id="ruleSet">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+            </div>
+            <div id="p-sets">
+                <p>Predefined sets</p>
+                <button onclick="start([0,0,0,1,1,1,1,0])">Rule 30</button>
+                <button onclick="start([0,1,0,1,1,0,1,0])">Rule 90</button>
+                <button onclick="start([0,1,1,0,1,1,1,0])">Rule 110</button>
+            </div>
+        </footer>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="wolframSets.js"></script>
+    </body>
+</html>

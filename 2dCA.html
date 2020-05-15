@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Game of life</title>
+        <style>
+            header {
+                height: 60px;
+                background: #333;
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #game {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #counter{
+                color: white;
+                padding: 0 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <button onclick="start()">Start</button>
+            <button onclick="stop()">Stop</button>
+            <button onclick="clearGrid()">Clear</button>  
+            <div id="counter">0</div>          
+        </header>
+        
+        <section id="game">
+            
+        </section>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script>
+            const xCellCount = 150;
+            const yCellCount = 150;
+            const cellSize = 3;
+            const lifeCycle = 2500;
+            const w = xCellCount * cellSize;
+            const h = yCellCount * cellSize;
+            let startInt;
+            let counter = 0;
+            function get_random_color() {
+                var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', ]
+		        // '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+		        // '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
+		        // '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+		        // '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
+		        // '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+		        // '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
+		        // '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+		        // '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
+		        // '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+
+                function c(){ return colorArray[Math.floor(Math.random() * colorArray.length)]};
+                // function c() {
+                //     var hex = Math.floor(Math.random()*256).toString(16);
+                //     return ("0"+String(hex)).substr(-2); // pad with zero
+                // }
+                //return "#"+c()+c()+c();
+                return c()
+            }
+            var svgContainer = d3.select("#game")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+            for (let i = 0; i < yCellCount; i++) {
+                for (let j = 0; j < xCellCount; j++) {
+
+                    const rectangle = svgContainer.append("rect")
+                    .attr("x", function() {
+                        return j * cellSize
+                    })
+                    .attr("y", function() {
+                        return i * cellSize
+                    })
+                    .attr("width", cellSize)
+                    .attr("height", cellSize)
+                    //.attr("fill", get_random_color())
+                    .attr("fill", get_random_color())
+                    .attr("stroke-width", 1)
+                    .attr("id", "r-"+ j * cellSize + "-" + i * cellSize)
+                    .attr("state","off")
+                }
+            }
+
+            function startGameOfLife(){
+
+                counter++;
+                const updateProbability = Math.random().toFixed(3);
+
+                document.getElementById("counter").innerHTML = counter;
+
+                svgContainer.selectAll("rect").each(function(d, i) {
+                    
+                    const cellProbability = Math.random().toFixed(3);       
+                    const colorChoise = Math.floor(Math.random() * 4 );
+
+                    const cell = d3.select(this);
+                    const rectX = parseFloat(cell.attr("x"));
+                    const rectY = parseFloat(cell.attr("y"));
+
+                    
+
+                    let n1 = [rectX, (rectY - cellSize)];
+                    let n2 = [(rectX - cellSize), rectY];
+                    let n3 = [(rectX + cellSize), rectY];
+                    let n4 = [rectX, (rectY + cellSize)];
+
+                    const result = [n1, n2, n3, n4]; 
+                    const chosenColorCell = result[colorChoise];
+
+                    if(chosenColorCell[0] > 0 && chosenColorCell[1] > 0 && 
+                        chosenColorCell[0] < xCellCount*cellSize && chosenColorCell[1] <  yCellCount*cellSize
+                    ){
+                        const changeColor = d3.select("#r-" + chosenColorCell[0] + "-" + chosenColorCell[1] ).attr("fill")
+                        if( cellProbability > updateProbability ){
+                            // result.forEach(cell =>{
+                            //     d3.select("#r-" + cell[0] + "-" + cell[1]).attr("fill", changeColor)
+                            // });
+                           cell.attr("fill", changeColor)
+                        }
+                    }
+
+
+                })
+
+            }
+
+            
+            function start(){
+                startInt = setInterval(() => startGameOfLife(),lifeCycle)
+                startGameOfLife()
+            }
+            function stop(){
+                 clearInterval(startInt);
+            }
+            function clearGrid(){
+                clearInterval(startInt);
+                counter = 0;
+
+            }
+        </script>
+    </body>
+</html>
